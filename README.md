@@ -1,4 +1,4 @@
-# node.js-vum.js-django-
+# node.js+vum.js+django前后分离 
 1.安装Node.js<br>
 2.安装vue-cli<br>
 3.创建django项目<br>
