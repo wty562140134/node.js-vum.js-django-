@@ -13,8 +13,6 @@
     'django.contrib.staticfiles',
     # 'webpack_loader',  # django-webpack-loader配置 要使用 pip install django-webpack-load django集成vue编译模版配置,使用前后分离可以不用
     'corsheaders',  # django解决npm跨域 要使用 pip install django-cors-headers 安装插件
-    'user',
-    'wx',
     ]
    找到ALLOWED_HOSTS = []改成ALLOWED_HOSTS = ['*']<br>
    
