@@ -106,6 +106,7 @@
     Vue.use(ElementUI)// 设置全局使用element-ui
    Vue前端跨域<br>
     
+   index.js中修改:
     proxyTable: {
       '/api': {
         target: 'http://127.0.0.1:8000',
@@ -115,6 +116,10 @@
         }
       }
     },
+   
+   关闭useEslint,不然会语法检查错误:
+   
+    useEslint: false,//关闭eslint检查防止报错
 
 8.Vue前端请求数据方法
 
