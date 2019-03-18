@@ -2,10 +2,13 @@
 1.安装Node.js<br>
 2.安装vue-cli<br>
 3.创建django项目<br>
+
+    django-admin startproject <project_name> <path>
   settings.py中找到INSTALLED_APPS添加'horizon.apps.HorizonConfig'<br>
   
      INSTALLED_APPS = [
     'django.contrib.admin',
+    'horizon.apps.HorizonConfig', # django解决npm跨域 一定要放在第二个,不然加载会出错
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -18,19 +21,19 @@
    
 4.django后台跨域
    
-   配置后台跨域
+   配置后台跨域settings.py文件中修改以下
    
     pip install django-cors-headers
    
     INSTALLED_APPS = [
     'django.contrib.admin',
-    'horizon.apps.HorizonConfig',
+    'horizon.apps.HorizonConfig', # django解决npm跨域 一定要放在第二个,不然加载会出错
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
+    'corsheaders', # django解决npm跨域
     ]
     
     MIDDLEWARE = [
@@ -81,13 +84,26 @@
     )  # 允许跨域请求的http头
     ###################################################################
   
-5.在django目录与app同级创建前端Vue项目
+5.在django目录与app同级创建前端Vue项目<br>
+
+    vue init webpack <projectname>
 6.在项目目录下安装依赖包<br>
 
     npm install axios # axios是vue官方推荐的前后端互通信息的插件
     npm install qs # qs是将表单内容组织成后台能够使用的数据的插件
     npm install element-ui # element-ui是基于vue开发的一套UI组件，可以很快的开发出一个叫好看的网站
-[element-ui官网](http://element-cn.eleme.io/#/zh-CN/component/installation)
+   [element-ui官网](http://element-cn.eleme.io/#/zh-CN/component/installation)
+    
+   若安装依赖中出现以下告警:
+   npm WARN ajv-keywords@2.1.1 requires a peer of ajv@^5.0.0 but none is installed. You must install peer dependencies yourself
+    
+      npm install -g npm-install-peers
+   npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevents@1.2.7 (node_modules\fsevents):<br>
+   
+   npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.2.7: wanted {"os":"darwin","arch":"any"} (current: {"os":"win32","arch":"x64"})<br>
+   fsevent是mac osx系统的，你是在win或者Linux下使用了 所以会有警告，忽略即可<br>
+   
+   
 7.引入依赖包<br>
    在项目目录下src/main.js中引入依赖包<br> 
    import 'element-ui/lib/theme-chalk/index.css'一定要放在import App from './App'之上不然自己写的样式会被覆盖<br>
@@ -104,9 +120,10 @@
     Vue.prototype.$ajax = Axios// 设置全局的请求发送插件
     Vue.config.productionTip = false
     Vue.use(ElementUI)// 设置全局使用element-ui
-   Vue前端跨域<br>
     
-   index.js中修改:
+   Vue前端跨域index.js中修改:<br>
+   在config/index.js中找到proxyTable添加<br>
+   
     proxyTable: {
       '/api': {
         target: 'http://127.0.0.1:8000',
@@ -121,13 +138,12 @@
    
     useEslint: false,//关闭eslint检查防止报错
 
-8.Vue前端请求数据方法
+8.Vue前端请求数据方法<br>
 
-   在App.vue中
-   在config/index.js中找到proxyTable添加<br>
+   在App.vue中<br>
    这里/api在proxyTable中被pathRewrite:所定义的空字符串代替,就剩下/index<br>
    所以实际被替换为:http://127.0.0.1:8000/index/<br>
-   注意index/参数需要和后台urls中的路由参数一致,不然无法正常发送请求<br>
+   注意:index/参数需要和后台urls中的路由参数一致,不然无法正常发送请求<br>
    
     export default {
     name: 'App',
@@ -143,8 +159,9 @@
       }
     }
     
-9.后端django接收数据方法
-
+9.后端django接收数据方法:<br>
+    这里为了方便直接在urls中添加index方法<br>
+    
      def index(request):
         print('>>>>>>>>>>>>>>>>>>', request)
         data = {
