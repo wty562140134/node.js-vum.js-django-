@@ -27,7 +27,7 @@
    
     INSTALLED_APPS = [
     'django.contrib.admin',
-    'horizon.apps.HorizonConfig', # django解决npm跨域 一定要放在第二个,不然加载会出错
+    #'horizon.apps.HorizonConfig', # 这是一个前段框架中间件这里可以不使用
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
