@@ -145,19 +145,29 @@
    所以实际被替换为:http://127.0.0.1:8000/index/<br>
    注意:index/参数需要和后台urls中的路由参数一致,不然无法正常发送请求<br>
    
-    export default {
-    name: 'App',
-    methods: {
-      send: function () {
-        console.log("测试按钮")
-        //这里/api在proxyTable中被pathRewrite:所定义的空字符串代替,就剩下/index
-        // 所以实际被替换为:http://127.0.0.1:8000/index/
-        //注意index/参数需要和后台urls中的路由参数一致,不然无法正常发送请求
-        this.$ajax.post('/api/index/')
-        console.log('测试222')
+    <template>
+        <div id="app">
+            <img src="./assets/logo.png">
+            <input type="button" value="发送" @click="send"></input>
+            <router-view/>
+        </div>
+    </template>
+    
+    <script>
+        export default {
+        name: 'App',
+        methods: {
+          send: function () {
+            console.log("测试按钮")
+            //这里/api在proxyTable中被pathRewrite:所定义的空字符串代替,就剩下/index
+            // 所以实际被替换为:http://127.0.0.1:8000/index/
+            //注意index/参数需要和后台urls中的路由参数一致,不然无法正常发送请求
+            this.$ajax.post('/api/index/')
+            console.log('测试222')
+            }
+          }
         }
-      }
-    }
+    </script>
     
 9.后端django接收数据方法:<br>
     这里为了方便直接在urls中添加index方法<br>
