@@ -182,3 +182,10 @@
     urlpatterns = [
     path('index/', index),  # 测试前后分离
     ]
+
+vue小技巧:
+config/index.sj 下:
+
+    autoOpenBrowser: false, //运行项目自动打开浏览器
+    host: 'localhost', // 项目ip
+    port: 8080, // 项目启动端口
