@@ -1,4 +1,5 @@
 # node.js+vum.js+django前后分离 
+## 开发阶段的配置
 1.安装Node.js<br>
 2.安装vue-cli<br>
 3.创建django项目<br>
@@ -182,3 +183,46 @@
     urlpatterns = [
     path('index/', index),  # 测试前后分离
     ]
+    
+## 部署生产阶段的配置
+   1.安装express-generator生成器
+        express是基于node.sj开发的可以作为一个前端服务器和反向代理服务器,类似于nginx<br>
+        
+    npm install express-generator -g
+   2.创建一个express项目
+   
+    express <project_name>
+   3.进入expressDemo目录，安装项目依赖
+    
+    npm install
+   4.解决生产阶段跨域<br>
+    (1).进入到所创建express项目下修改app.js加入以下配置
+        
+            /*
+            HTTP前端服务器解决跨域
+             */
+            app.all('*', function (req, res, next) {
+                res.header("Access-Control-Allow-Origin", "*");//项目上线后改成页面的地址
+                res.header("Access-Control-Allow-Headers", "X-Requested-With,Content-Type");
+                res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+                next();
+            });
+
+            /*
+            HTTP前端服务器请求代理设置,这一段一定要放在处理404前面,不然会导致页面请求无法正常到达后端服务器
+             */
+            var proxyMiddleWare = require('http-proxy-middleware');
+            var proxyOption = {
+                target: 'http://127.0.0.1:8000',
+                changeOrigoin: true,
+                ws: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            };
+            app.use(express.static(__dirname + "public"));
+            app.use("/api", proxyMiddleWare(proxyOption));
+            app.listen(4000);
+   5.把dist目录下的所有文件复制到express项目的public文件夹下后退出到express项目根路径后启动服务
+   
+    npm start
