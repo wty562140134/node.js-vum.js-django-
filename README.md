@@ -5,24 +5,11 @@
 3.创建django项目<br>
 
     django-admin startproject <project_name> <path>
-  settings.py中找到INSTALLED_APPS添加'horizon.apps.HorizonConfig'<br>
-  
-     INSTALLED_APPS = [
-    'django.contrib.admin',
-    'horizon.apps.HorizonConfig', # django解决npm跨域 一定要放在第二个,不然加载会出错
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # 'webpack_loader',  # django-webpack-loader配置 要使用 pip install django-webpack-load django集成vue编译模版配置,使用前后分离可以不用
-    'corsheaders',  # django解决npm跨域 要使用 pip install django-cors-headers 安装插件
-    ]
-   找到ALLOWED_HOSTS = []改成ALLOWED_HOSTS = ['*']<br>
+  找到ALLOWED_HOSTS = []改成ALLOWED_HOSTS = ['*']<br>
    
 4.django后台跨域
    
-   配置后台跨域settings.py文件中修改以下
+   安装django-cors-headers和配置后台跨域.settings.py文件中修改
    
     pip install django-cors-headers
    
